@@ -189,7 +189,7 @@ function init(canvas) {
     contexts: {},
     programInfos: {},
 
-    getNewId: function(table) {
+    getNewId(table) {
       let ret = GL.counter++;
       for (let i = table.length; i < ret; i++) {
         table[i] = null;
@@ -197,7 +197,7 @@ function init(canvas) {
       return ret;
     },
 
-    validateGLObjectID: function(objectHandleArray, objectID, callerFunctionName, objectReadableType) {
+    validateGLObjectID(objectHandleArray, objectID, callerFunctionName, objectReadableType) {
       if (objectID != 0) {
         if (objectHandleArray[objectID] === null) {
           console.error(callerFunctionName + ' called with an already deleted ' + objectReadableType + ' ID ' + objectID + '!');
@@ -206,7 +206,7 @@ function init(canvas) {
         }
       }
     },
-    getSource: function(shader, count, string, length) {
+    getSource(shader, count, string, length) {
       let source = '';
       for (let i = 0; i < count; ++i) {
         let len = length == 0 ? undefined : getArray(length + i * 4, Uint32Array, 1)[0];
@@ -214,7 +214,7 @@ function init(canvas) {
       }
       return source;
     },
-    populateUniformTable: function(program) {
+    populateUniformTable(program) {
       GL.validateGLObjectID(GL.programs, program, 'populateUniformTable', 'program');
       let p = GL.programs[program];
       let ptable = GL.programInfos[program] = {
@@ -589,167 +589,167 @@ function init(canvas) {
 
   let importObject = {
     env: {
-      console_debug: function(ptr) {
+      console_debug(ptr) {
         console.debug(UTF8ToString(ptr));
       },
-      console_log: function(ptr) {
+      console_log(ptr) {
         console.log(UTF8ToString(ptr));
       },
-      console_info: function(ptr) {
+      console_info(ptr) {
         console.info(UTF8ToString(ptr));
       },
-      console_warn: function(ptr) {
+      console_warn(ptr) {
         console.warn(UTF8ToString(ptr));
       },
-      console_error: function(ptr) {
+      console_error(ptr) {
         console.error(UTF8ToString(ptr));
       },
-      set_emscripten_shader_hack: function(flag) {
+      set_emscripten_shader_hack(flag) {
         emscripten_shaders_hack = flag;
       },
-      sapp_set_clipboard: function(ptr, len) {
+      sapp_set_clipboard(ptr, len) {
         clipboard = UTF8ToString(ptr, len);
       },
       dpi_scale,
-      rand: function() {
+      rand() {
         return Math.floor(Math.random() * 2147483647);
       },
-      now: function() {
+      now() {
         return Date.now() / 1000.0;
       },
-      canvas_width: function() {
+      canvas_width() {
         return Math.floor(canvas.width);
       },
-      canvas_height: function() {
+      canvas_height() {
         return Math.floor(canvas.height);
       },
-      glClearDepthf: function(depth) {
+      glClearDepthf(depth) {
         gl.clearDepth(depth);
       },
-      glClearColor: function(r, g, b, a) {
+      glClearColor(r, g, b, a) {
         gl.clearColor(r, g, b, a);
       },
-      glClearStencil: function(s) {
+      glClearStencil(s) {
         gl.clearColorStencil(s);
       },
-      glColorMask: function(red, green, blue, alpha) {
+      glColorMask(red, green, blue, alpha) {
         gl.colorMask(red, green, blue, alpha);
       },
-      glScissor: function(x, y, w, h) {
+      glScissor(x, y, w, h) {
         gl.scissor(x, y, w, h);
       },
-      glClear: function(mask) {
+      glClear(mask) {
         gl.clear(mask);
       },
-      glGenTextures: function(n, textures) {
+      glGenTextures(n, textures) {
         _glGenObject(n, textures, "createTexture", GL.textures, "glGenTextures")
       },
-      glActiveTexture: function(texture) {
+      glActiveTexture(texture) {
         gl.activeTexture(texture)
       },
-      glBindTexture: function(target, texture) {
+      glBindTexture(target, texture) {
         GL.validateGLObjectID(GL.textures, texture, 'glBindTexture', 'texture');
         gl.bindTexture(target, GL.textures[texture]);
       },
-      glTexImage2D: function(target, level, internalFormat, width, height, border, format, type, pixels) {
+      glTexImage2D(target, level, internalFormat, width, height, border, format, type, pixels) {
         gl.texImage2D(target, level, internalFormat, width, height, border, format, type,
           pixels ? getArray(pixels, Uint8Array, texture_size(internalFormat, width, height)) : null);
       },
-      glTexSubImage2D: function(target, level, xoffset, yoffset, width, height, format, type, pixels) {
+      glTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels) {
         gl.texSubImage2D(target, level, xoffset, yoffset, width, height, format, type,
           pixels ? getArray(pixels, Uint8Array, texture_size(format, width, height)) : null);
       },
-      glReadPixels: function(x, y, width, height, format, type, pixels) {
+      glReadPixels(x, y, width, height, format, type, pixels) {
         let pixelData = getArray(pixels, Uint8Array, texture_size(format, width, height));
         gl.readPixels(x, y, width, height, format, type, pixelData);
       },
-      glTexParameteri: function(target, pname, param) {
+      glTexParameteri(target, pname, param) {
         gl.texParameteri(target, pname, param);
       },
-      glUniform1fv: function(location, count, value) {
+      glUniform1fv(location, count, value) {
         GL.validateGLObjectID(GL.uniforms, location, 'glUniform1fv', 'location');
         assert((value & 3) == 0, 'Pointer to float data passed to glUniform1fv must be aligned to four bytes!');
         let view = getArray(value, Float32Array, 1 * count);
         gl.uniform1fv(GL.uniforms[location], view);
       },
-      glUniform2fv: function(location, count, value) {
+      glUniform2fv(location, count, value) {
         GL.validateGLObjectID(GL.uniforms, location, 'glUniform2fv', 'location');
         assert((value & 3) == 0, 'Pointer to float data passed to glUniform2fv must be aligned to four bytes!');
         let view = getArray(value, Float32Array, 2 * count);
         gl.uniform2fv(GL.uniforms[location], view);
       },
-      glUniform3fv: function(location, count, value) {
+      glUniform3fv(location, count, value) {
         GL.validateGLObjectID(GL.uniforms, location, 'glUniform3fv', 'location');
         assert((value & 3) == 0, 'Pointer to float data passed to glUniform3fv must be aligned to four bytes!');
         let view = getArray(value, Float32Array, 3 * count);
         gl.uniform3fv(GL.uniforms[location], view);
       },
-      glUniform4fv: function(location, count, value) {
+      glUniform4fv(location, count, value) {
         GL.validateGLObjectID(GL.uniforms, location, 'glUniform4fv', 'location');
         assert((value & 3) == 0, 'Pointer to float data passed to glUniform4fv must be aligned to four bytes!');
         let view = getArray(value, Float32Array, 4 * count);
         gl.uniform4fv(GL.uniforms[location], view);
       },
-      glUniform1iv: function(location, count, value) {
+      glUniform1iv(location, count, value) {
         GL.validateGLObjectID(GL.uniforms, location, 'glUniform1fv', 'location');
         assert((value & 3) == 0, 'Pointer to i32 data passed to glUniform1iv must be aligned to four bytes!');
         let view = getArray(value, Int32Array, 1 * count);
         gl.uniform1iv(GL.uniforms[location], view);
       },
-      glUniform2iv: function(location, count, value) {
+      glUniform2iv(location, count, value) {
         GL.validateGLObjectID(GL.uniforms, location, 'glUniform2fv', 'location');
         assert((value & 3) == 0, 'Pointer to i32 data passed to glUniform2iv must be aligned to four bytes!');
         let view = getArray(value, Int32Array, 2 * count);
         gl.uniform2iv(GL.uniforms[location], view);
       },
-      glUniform3iv: function(location, count, value) {
+      glUniform3iv(location, count, value) {
         GL.validateGLObjectID(GL.uniforms, location, 'glUniform3fv', 'location');
         assert((value & 3) == 0, 'Pointer to i32 data passed to glUniform3iv must be aligned to four bytes!');
         let view = getArray(value, Int32Array, 3 * count);
         gl.uniform3iv(GL.uniforms[location], view);
       },
-      glUniform4iv: function(location, count, value) {
+      glUniform4iv(location, count, value) {
         GL.validateGLObjectID(GL.uniforms, location, 'glUniform4fv', 'location');
         assert((value & 3) == 0, 'Pointer to i32 data passed to glUniform4iv must be aligned to four bytes!');
         let view = getArray(value, Int32Array, 4 * count);
         gl.uniform4iv(GL.uniforms[location], view);
       },
-      glBlendFunc: function(sfactor, dfactor) {
+      glBlendFunc(sfactor, dfactor) {
         gl.blendFunc(sfactor, dfactor);
       },
-      glBlendEquationSeparate: function(modeRGB, modeAlpha) {
+      glBlendEquationSeparate(modeRGB, modeAlpha) {
         gl.blendEquationSeparate(modeRGB, modeAlpha);
       },
-      glDisable: function(cap) {
+      glDisable(cap) {
         gl.disable(cap);
       },
-      glDrawElements: function(mode, count, type, indices) {
+      glDrawElements(mode, count, type, indices) {
         gl.drawElements(mode, count, type, indices);
       },
-      glGetIntegerv: function(name_, p) {
+      glGetIntegerv(name_, p) {
         _webglGet(name_, p, 'EM_FUNC_SIG_PARAM_I');
       },
-      glUniform1f: function(location, v0) {
+      glUniform1f(location, v0) {
         GL.validateGLObjectID(GL.uniforms, location, 'glUniform1f', 'location');
         gl.uniform1f(GL.uniforms[location], v0);
       },
-      glUniform1i: function(location, v0) {
+      glUniform1i(location, v0) {
         GL.validateGLObjectID(GL.uniforms, location, 'glUniform1i', 'location');
         gl.uniform1i(GL.uniforms[location], v0);
       },
-      glGetAttribLocation: function(program, name) {
+      glGetAttribLocation(program, name) {
         return gl.getAttribLocation(GL.programs[program], UTF8ToString(name));
       },
-      glEnableVertexAttribArray: function(index) {
+      glEnableVertexAttribArray(index) {
         gl.enableVertexAttribArray(index);
       },
-      glDisableVertexAttribArray: function(index) {
+      glDisableVertexAttribArray(index) {
         gl.disableVertexAttribArray(index);
       },
-      glVertexAttribPointer: function(index, size, type, normalized, stride, ptr) {
+      glVertexAttribPointer(index, size, type, normalized, stride, ptr) {
         gl.vertexAttribPointer(index, size, type, !!normalized, stride, ptr);
       },
-      glGetUniformLocation: function(program, name) {
+      glGetUniformLocation(program, name) {
         GL.validateGLObjectID(GL.programs, program, 'glGetUniformLocation', 'program');
         name = UTF8ToString(name);
         let arrayIndex = 0;
@@ -767,90 +767,90 @@ function init(canvas) {
           return -1;
         }
       },
-      glUniformMatrix4fv: function(location, count, transpose, value) {
+      glUniformMatrix4fv(location, count, transpose, value) {
         GL.validateGLObjectID(GL.uniforms, location, 'glUniformMatrix4fv', 'location');
         assert((value & 3) == 0, 'Pointer to float data passed to glUniformMatrix4fv must be aligned to four bytes!');
         let view = getArray(value, Float32Array, 16);
         gl.uniformMatrix4fv(GL.uniforms[location], !!transpose, view);
       },
-      glUseProgram: function(program) {
+      glUseProgram(program) {
         GL.validateGLObjectID(GL.programs, program, 'glUseProgram', 'program');
         gl.useProgram(GL.programs[program]);
       },
-      glGenVertexArrays: function(n, arrays) {
+      glGenVertexArrays(n, arrays) {
         _glGenObject(n, arrays, 'createVertexArray', GL.vaos, 'glGenVertexArrays');
       },
-      glGenFramebuffers: function(n, ids) {
+      glGenFramebuffers(n, ids) {
         _glGenObject(n, ids, 'createFramebuffer', GL.framebuffers, 'glGenFramebuffers');
       },
-      glBindVertexArray: function(vao) {
+      glBindVertexArray(vao) {
         gl.bindVertexArray(GL.vaos[vao]);
       },
-      glBindFramebuffer: function(target, framebuffer) {
+      glBindFramebuffer(target, framebuffer) {
         GL.validateGLObjectID(GL.framebuffers, framebuffer, 'glBindFramebuffer', 'framebuffer');
 
         gl.bindFramebuffer(target, GL.framebuffers[framebuffer]);
       },
 
-      glGenBuffers: function(n, buffers) {
+      glGenBuffers(n, buffers) {
         _glGenObject(n, buffers, 'createBuffer', GL.buffers, 'glGenBuffers');
       },
-      glBindBuffer: function(target, buffer) {
+      glBindBuffer(target, buffer) {
         GL.validateGLObjectID(GL.buffers, buffer, 'glBindBuffer', 'buffer');
         gl.bindBuffer(target, GL.buffers[buffer]);
       },
-      glBufferData: function(target, size, data, usage) {
+      glBufferData(target, size, data, usage) {
         gl.bufferData(target, data ? getArray(data, Uint8Array, size) : size, usage);
       },
-      glBufferSubData: function(target, offset, size, data) {
+      glBufferSubData(target, offset, size, data) {
         gl.bufferSubData(target, offset, data ? getArray(data, Uint8Array, size) : size);
       },
-      glEnable: function(cap) {
+      glEnable(cap) {
         gl.enable(cap);
       },
-      glFlush: function() {
+      glFlush() {
         gl.flush();
       },
-      glFinish: function() {
+      glFinish() {
         gl.finish();
       },
-      glDepthFunc: function(func) {
+      glDepthFunc(func) {
         gl.depthFunc(func);
       },
-      glBlendFuncSeparate: function(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha) {
+      glBlendFuncSeparate(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha) {
         gl.blendFuncSeparate(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha);
       },
-      glViewport: function(x, y, width, height) {
+      glViewport(x, y, width, height) {
         gl.viewport(x, y, width, height);
       },
-      glDrawArrays: function(mode, first, count) {
+      glDrawArrays(mode, first, count) {
         gl.drawArrays(mode, first, count);
       },
-      glCreateProgram: function() {
+      glCreateProgram() {
         let id = GL.getNewId(GL.programs);
         let program = gl.createProgram();
         program.name = id;
         GL.programs[id] = program;
         return id;
       },
-      glAttachShader: function(program, shader) {
+      glAttachShader(program, shader) {
         GL.validateGLObjectID(GL.programs, program, 'glAttachShader', 'program');
         GL.validateGLObjectID(GL.shaders, shader, 'glAttachShader', 'shader');
         gl.attachShader(GL.programs[program], GL.shaders[shader]);
       },
-      glLinkProgram: function(program) {
+      glLinkProgram(program) {
         GL.validateGLObjectID(GL.programs, program, 'glLinkProgram', 'program');
         gl.linkProgram(GL.programs[program]);
         GL.populateUniformTable(program);
       },
-      glPixelStorei: function(pname, param) {
+      glPixelStorei(pname, param) {
         gl.pixelStorei(pname, param);
       },
-      glFramebufferTexture2D: function(target, attachment, textarget, texture, level) {
+      glFramebufferTexture2D(target, attachment, textarget, texture, level) {
         GL.validateGLObjectID(GL.textures, texture, 'glFramebufferTexture2D', 'texture');
         gl.framebufferTexture2D(target, attachment, textarget, GL.textures[texture], level);
       },
-      glGetProgramiv: function(program, pname, p) {
+      glGetProgramiv(program, pname, p) {
         assert(p);
         GL.validateGLObjectID(GL.programs, program, 'glGetProgramiv', 'program');
         if (program >= GL.counter) {
@@ -880,31 +880,31 @@ function init(canvas) {
           getArray(p, Int32Array, 1)[0] = gl.getProgramParameter(GL.programs[program], pname);
         }
       },
-      glCreateShader: function(shaderType) {
+      glCreateShader(shaderType) {
         let id = GL.getNewId(GL.shaders);
         GL.shaders[id] = gl.createShader(shaderType);
         return id;
       },
-      glStencilFuncSeparate: function(face, func, ref_, mask) {
+      glStencilFuncSeparate(face, func, ref_, mask) {
         gl.stencilFuncSeparate(face, func, ref_, mask);
       },
-      glStencilMaskSeparate: function(face, mask) {
+      glStencilMaskSeparate(face, mask) {
         gl.stencilMaskSeparate(face, mask);
       },
-      glStencilOpSeparate: function(face, fail, zfail, zpass) {
+      glStencilOpSeparate(face, fail, zfail, zpass) {
         gl.stencilOpSeparate(face, fail, zfail, zpass);
       },
-      glFrontFace: function(mode) {
+      glFrontFace(mode) {
         gl.frontFace(mode);
       },
-      glCullFace: function(mode) {
+      glCullFace(mode) {
         gl.cullFace(mode);
       },
-      glCopyTexImage2D: function(target, level, internalformat, x, y, width, height, border) {
+      glCopyTexImage2D(target, level, internalformat, x, y, width, height, border) {
         gl.copyTexImage2D(target, level, internalformat, x, y, width, height, border);
       },
 
-      glShaderSource: function(shader, count, string, length) {
+      glShaderSource(shader, count, string, length) {
         GL.validateGLObjectID(GL.shaders, shader, 'glShaderSource', 'shader');
         let source = GL.getSource(shader, count, string, length);
 
@@ -940,7 +940,7 @@ function init(canvas) {
 
         gl.shaderSource(GL.shaders[shader], source);
       },
-      glGetProgramInfoLog: function(program, maxLength, length, infoLog) {
+      glGetProgramInfoLog(program, maxLength, length, infoLog) {
         GL.validateGLObjectID(GL.programs, program, 'glGetProgramInfoLog', 'program');
         let log = gl.getProgramInfoLog(GL.programs[program]);
         assert(log !== null);
@@ -949,11 +949,11 @@ function init(canvas) {
           array[i] = log.charCodeAt(i);
         }
       },
-      glCompileShader: function(shader, count, string, length) {
+      glCompileShader(shader, count, string, length) {
         GL.validateGLObjectID(GL.shaders, shader, 'glCompileShader', 'shader');
         gl.compileShader(GL.shaders[shader]);
       },
-      glGetShaderiv: function(shader, pname, p) {
+      glGetShaderiv(shader, pname, p) {
         assert(p);
         GL.validateGLObjectID(GL.shaders, shader, 'glGetShaderiv', 'shader');
         if (pname == 0x8B84) { // GL_INFO_LOG_LENGTH
@@ -970,7 +970,7 @@ function init(canvas) {
           getArray(p, Int32Array, 1)[0] = gl.getShaderParameter(GL.shaders[shader], pname);
         }
       },
-      glGetShaderInfoLog: function(shader, maxLength, length, infoLog) {
+      glGetShaderInfoLog(shader, maxLength, length, infoLog) {
         GL.validateGLObjectID(GL.shaders, shader, 'glGetShaderInfoLog', 'shader');
         let log = gl.getShaderInfoLog(GL.shaders[shader]);
         assert(log !== null);
@@ -979,17 +979,17 @@ function init(canvas) {
           array[i] = log.charCodeAt(i);
         }
       },
-      glVertexAttribDivisor: function(index, divisor) {
+      glVertexAttribDivisor(index, divisor) {
         gl.vertexAttribDivisor(index, divisor);
       },
-      glDrawArraysInstanced: function(mode, first, count, primcount) {
+      glDrawArraysInstanced(mode, first, count, primcount) {
         gl.drawArraysInstanced(mode, first, count, primcount);
       },
-      glDrawElementsInstanced: function(mode, count, type, indices, primcount) {
+      glDrawElementsInstanced(mode, count, type, indices, primcount) {
         gl.drawElementsInstanced(mode, count, type, indices, primcount);
       },
-      glDeleteShader: function(shader) { gl.deleteShader(shader) },
-      glDeleteBuffers: function(n, buffers) {
+      glDeleteShader(shader) { gl.deleteShader(shader) },
+      glDeleteBuffers(n, buffers) {
         for (let i = 0; i < n; i++) {
           let id = getArray(buffers + i * 4, Uint32Array, 1)[0];
           let buffer = GL.buffers[id];
@@ -1003,7 +1003,7 @@ function init(canvas) {
           GL.buffers[id] = null;
         }
       },
-      glDeleteFramebuffers: function(n, buffers) {
+      glDeleteFramebuffers(n, buffers) {
         for (let i = 0; i < n; i++) {
           let id = getArray(buffers + i * 4, Uint32Array, 1)[0];
           let buffer = GL.framebuffers[id];
@@ -1017,7 +1017,7 @@ function init(canvas) {
           GL.framebuffers[id] = null;
         }
       },
-      glDeleteTextures: function(n, textures) {
+      glDeleteTextures(n, textures) {
         for (let i = 0; i < n; i++) {
           let id = getArray(textures + i * 4, Uint32Array, 1)[0];
           let texture = GL.textures[id];
@@ -1027,10 +1027,10 @@ function init(canvas) {
           GL.textures[id] = null;
         }
       },
-      glGenQueries: function(n, ids) {
+      glGenQueries(n, ids) {
         _glGenObject(n, ids, 'createQuery', GL.timerQueries, 'glGenQueries');
       },
-      glDeleteQueries: function(n, ids) {
+      glDeleteQueries(n, ids) {
         for (let i = 0; i < n; i++) {
           let id = getArray(textures + i * 4, Uint32Array, 1)[0];
           let query = GL.timerQueries[id];
@@ -1042,30 +1042,30 @@ function init(canvas) {
           GL.timerQueries[id] = null;
         }
       },
-      glBeginQuery: function(target, id) {
+      glBeginQuery(target, id) {
         GL.validateGLObjectID(GL.timerQueries, id, 'glBeginQuery', 'id');
         gl.beginQuery(target, GL.timerQueries[id]);
       },
-      glEndQuery: function(target) {
+      glEndQuery(target) {
         gl.endQuery(target);
       },
-      glGetQueryObjectiv: function(id, pname, ptr) {
+      glGetQueryObjectiv(id, pname, ptr) {
         GL.validateGLObjectID(GL.timerQueries, id, 'glGetQueryObjectiv', 'id');
         let result = gl.getQueryObject(GL.timerQueries[id], pname);
         getArray(ptr, Uint32Array, 1)[0] = result;
       },
-      glGetQueryObjectui64v: function(id, pname, ptr) {
+      glGetQueryObjectui64v(id, pname, ptr) {
         GL.validateGLObjectID(GL.timerQueries, id, 'glGetQueryObjectui64v', 'id');
         let result = gl.getQueryObject(GL.timerQueries[id], pname);
         let heap = getArray(ptr, Uint32Array, 2);
         heap[0] = result;
         heap[1] = (result - heap[0]) / 4294967296;
       },
-      setup_canvas_size: function(high_dpi) {
+      setup_canvas_size(high_dpi) {
         window.high_dpi = high_dpi;
         // resize(canvas);
       },
-      run_animation_loop: function(ptr) {
+      run_animation_loop(ptr) {
         canvas.onmousemove = function(event) {
           let relative_position = mouse_relative_position(event.clientX, event.clientY);
           let x = relative_position.x;
@@ -1225,7 +1225,7 @@ function init(canvas) {
         window.requestAnimationFrame(animation);
       },
 
-      fs_load_file: function(ptr, len) {
+      fs_load_file(ptr, len) {
         let url = UTF8ToString(ptr, len);
         let file_id = FS.unique_id;
         FS.unique_id += 1;
@@ -1250,14 +1250,14 @@ function init(canvas) {
         return file_id;
       },
 
-      fs_get_buffer_size: function(file_id) {
+      fs_get_buffer_size(file_id) {
         if (FS.loaded_files[file_id] == null) {
           return -1;
         } else {
           return FS.loaded_files[file_id].length;
         }
       },
-      fs_take_buffer: function(file_id, ptr, max_length) {
+      fs_take_buffer(file_id, ptr, max_length) {
         let file = FS.loaded_files[file_id];
         console.assert(file.length <= max_length);
         let dest = new Uint8Array(wasm_memory.buffer, ptr, max_length);
@@ -1266,29 +1266,29 @@ function init(canvas) {
         }
         delete FS.loaded_files[file_id];
       },
-      sapp_set_cursor_grab: function(grab) {
+      sapp_set_cursor_grab(grab) {
         if (grab) {
           canvas.requestPointerLock();
         } else {
           document.exitPointerLock();
         }
       },
-      sapp_set_cursor: function(ptr, len) {
+      sapp_set_cursor(ptr, len) {
         canvas.style.cursor = UTF8ToString(ptr, len);
       },
-      sapp_is_fullscreen: function() {
+      sapp_is_fullscreen() {
         let fullscreenElement = document.fullscreenElement;
 
         return fullscreenElement != null && fullscreenElement.id == canvas.id;
       },
-      sapp_set_fullscreen: function(fullscreen) {
+      sapp_set_fullscreen(fullscreen) {
         if (!fullscreen) {
           document.exitFullscreen();
         } else {
           canvas.requestFullscreen();
         }
       },
-      sapp_set_window_size: function(new_width, new_height) {
+      sapp_set_window_size(new_width, new_height) {
         canvas.width = new_width;
         canvas.height = new_height;
         // resize(canvas, wasm_exports.resize);
