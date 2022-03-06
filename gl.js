@@ -8,9 +8,11 @@
 
 "use strict";
 
-const version = "0.1.26";
+const GLoader = {
+  gljs_version: "0.1.26",
+};
 
-function init(canvas) {
+GLoader.init = function (canvas) {
   if (!canvas instanceof HTMLCanvasElement) {
     console.error(
       "Unable to initialize the canvas. The passed element isn't an instance of HTMLCanvasElement."
@@ -1900,9 +1902,9 @@ function init(canvas) {
           wasm_exports = obj.exports;
 
           let crate_version = u32_to_semver(wasm_exports.crate_version());
-          if (version != crate_version) {
+          if (GLoader.gljs_version != crate_version) {
             console.error(
-              `Version mismatch: gl.js version is: ${version}, rust sapp-wasm crate version is: ${crate_version}`
+              `Version mismatch: gl.js version is: ${GLoader.version}, rust sapp-wasm crate version is: ${crate_version}`
             );
           }
           init_plugins(plugins);
@@ -1927,9 +1929,9 @@ function init(canvas) {
           wasm_exports = obj.exports;
 
           let crate_version = u32_to_semver(wasm_exports.crate_version());
-          if (version != crate_version) {
+          if (GLoader.version != crate_version) {
             console.error(
-              `Version mismatch: gl.js version is: ${version}, rust sapp-wasm crate version is: ${crate_version}`
+              `Version mismatch: gl.js version is: ${GLoader.version}, rust sapp-wasm crate version is: ${crate_version}`
             );
           }
           init_plugins(plugins);
@@ -1945,4 +1947,4 @@ function init(canvas) {
   }
 
   return { load };
-}
+};
