@@ -11,6 +11,8 @@
   "author": "Adi-df",
   "license": "MIT",
   "devDependencies": {
+    "@swc/cli": "^0.1.55",
+    "@swc/core": "^1.2.150",
     "prettier": "2.5.1",
     "terser": "5.12.0"
   }
