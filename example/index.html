@@ -20,11 +20,11 @@
     <canvas id="glcanvas2" tabindex="1" width="800px" height="600px"></canvas>
     <script src="../dist/gl.min.js"></script>
     <script>
-      const { load: load1 } = GLoader.init(
+      const { load: load1 } = GLoader.create(
         document.querySelector("canvas#glcanvas")
       );
       load1("quad.wasm");
-      const { load: load2 } = GLoader.init(
+      const { load: load2 } = GLoader.create(
         document.querySelector("canvas#glcanvas2")
       );
       load2("quad.wasm");

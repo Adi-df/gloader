@@ -67,7 +67,7 @@ Become this with tweaked gloader.js
     <canvas id="glcanvas" tabindex="1"></canvas>
     <script src="https://raw.githubusercontent.com/Adi-df/gloader/master/dist/gl.min.js"></script>
     <script>
-      const {load} = GLoader.init(document.querySelector("#glcanvas")):
+      const {load} = GLoader.create(document.querySelector("#glcanvas")):
       load("quad.wasm"); // Your compiled wasm file
     </script>
   </body>

@@ -4,6 +4,7 @@
   "description": "",
   "main": "gl.js",
   "scripts": {
+    "format": "prettier --write .",
     "minify": "terser gl.js -m -c > dist/gl.min.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
