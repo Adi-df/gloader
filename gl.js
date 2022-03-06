@@ -12,7 +12,7 @@ const GLoader = {
   gljs_version: "0.1.26",
 };
 
-GLoader.init = function (canvas) {
+GLoader.create = function (canvas) {
   if (!canvas instanceof HTMLCanvasElement) {
     console.error(
       "Unable to initialize the canvas. The passed element isn't an instance of HTMLCanvasElement."
@@ -1946,5 +1946,5 @@ GLoader.init = function (canvas) {
     }
   }
 
-  return { load };
+  return { load, miniquad_add_plugin };
 };
