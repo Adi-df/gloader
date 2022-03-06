@@ -26,14 +26,14 @@ function init(canvas) {
   canvas.focus();
 
   canvas.requestPointerLock = canvas.requestPointerLock ||
-    canvas.mozRequestPointerLock ||
-    // pointer lock in any form is not supported on iOS safari 
-    // https://developer.mozilla.org/en-US/docs/Web/API/Pointer_Lock_API#browser_compatibility
-    (function() { });
+    canvas.mozRequestPointerLock || canvas.webkitRequestPointerLock
+      // pointer lock in any form is not supported on iOS safari 
+      // https://developer.mozilla.org/en-US/docs/Web/API/Pointer_Lock_API#browser_compatibility
+      (() => { });
   document.exitPointerLock = document.exitPointerLock ||
-    document.mozExitPointerLock ||
-    // pointer lock in any form is not supported on iOS safari
-    (function() { });
+    document.mozExitPointerLock || document.webkitExitPointerLock
+      // pointer lock in any form is not supported on iOS safari
+      (() => { });
 
   function assert(flag, message) {
     if (flag == false) {
