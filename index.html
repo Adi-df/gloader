@@ -1,31 +1,29 @@
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>TITLE</title>
+    <style>
+      html,
+      body,
+      canvas {
+        margin: 0px;
+        padding: 0px;
+        overflow: hidden;
+        background: black;
+        z-index: 0;
+      }
+    </style>
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <title>TITLE</title>
-  <style>
-    html,
-    body,
-    canvas {
-      margin: 0px;
-      padding: 0px;
-      overflow: hidden;
-      background: black;
-      z-index: 0;
-    }
-  </style>
-</head>
-
-<body>
-  <canvas id="glcanvas" tabindex='1' width="800px" height="600px"></canvas>
-  <canvas id="glcanvas2" tabindex='1' width="800px" height="600px"></canvas>
-  <script src="gl.js"></script>
-  <script>
-    const {load: load1} = init(document.querySelector("canvas#glcanvas"));
-    load1("quad.wasm");
-    const {load: load2} = init(document.querySelector("canvas#glcanvas2"));
-    load2("quad.wasm");
-  </script>
-</body>
-
+  <body>
+    <canvas id="glcanvas" tabindex="1" width="800px" height="600px"></canvas>
+    <canvas id="glcanvas2" tabindex="1" width="800px" height="600px"></canvas>
+    <script src="gl.js"></script>
+    <script>
+      const { load: load1 } = init(document.querySelector("canvas#glcanvas"));
+      load1("quad.wasm");
+      const { load: load2 } = init(document.querySelector("canvas#glcanvas2"));
+      load2("quad.wasm");
+    </script>
+  </body>
 </html>
