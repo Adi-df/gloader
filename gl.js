@@ -60,20 +60,20 @@ function init(canvas) {
     // Extension available in WebGL 1 from Firefox 26 and Google Chrome 30 onwards. Core feature in WebGL 2.
     let ext = ctx.getExtension('ANGLE_instanced_arrays');
     if (ext) {
-      ctx['vertexAttribDivisor'] = function(index, divisor) { ext['vertexAttribDivisorANGLE'](index, divisor); };
-      ctx['drawArraysInstanced'] = function(mode, first, count, primcount) { ext['drawArraysInstancedANGLE'](mode, first, count, primcount); };
-      ctx['drawElementsInstanced'] = function(mode, count, type, indices, primcount) { ext['drawElementsInstancedANGLE'](mode, count, type, indices, primcount); };
+      ctx['vertexAttribDivisor'] = (index, divisor) => ext['vertexAttribDivisorANGLE'](index, divisor);
+      ctx['drawArraysInstanced'] = (mode, first, count, primcount) => ext['drawArraysInstancedANGLE'](mode, first, count, primcount);
+      ctx['drawElementsInstanced'] = (mode, count, type, indices, primcount) => ext['drawElementsInstancedANGLE'](mode, count, type, indices, primcount);
     }
   }
 
   function acquireDisjointTimerQueryExtension(ctx) {
     let ext = ctx.getExtension('EXT_disjoint_timer_query');
     if (ext) {
-      ctx['createQuery'] = function() { return ext['createQueryEXT'](); };
-      ctx['beginQuery'] = function(target, query) { return ext['beginQueryEXT'](target, query); };
-      ctx['endQuery'] = function(target) { return ext['endQueryEXT'](target); };
-      ctx['deleteQuery'] = function(query) { ext['deleteQueryEXT'](query); };
-      ctx['getQueryObject'] = function(query, pname) { return ext['getQueryObjectEXT'](query, pname); };
+      ctx['createQuery'] = () => ext['createQueryEXT']();
+      ctx['beginQuery'] = (target, query) => ext['beginQueryEXT'](target, query);
+      ctx['endQuery'] = (target) => ext['endQueryEXT'](target);
+      ctx['deleteQuery'] = (query) => ext['deleteQueryEXT'](query);
+      ctx['getQueryObject'] = (query, pname) => ext['getQueryObjectEXT'](query, pname);
     }
   }
 
