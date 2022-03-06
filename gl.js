@@ -11,11 +11,19 @@
 const version = "0.1.26";
 
 function init(canvas) {
+  if (!canvas instanceof HTMLCanvasElement) {
+    console.error(
+      "Unable to initialize the canvas. The passed element isn't an instance of HTMLCanvasElement."
+    );
+    return;
+  }
+
   const gl = canvas.getContext("webgl");
   if (gl === null) {
     alert(
       "Unable to initialize WebGL. Your browser or machine may not support it."
     );
+    return;
   }
 
   let clipboard = null;
