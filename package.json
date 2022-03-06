@@ -4,11 +4,13 @@
   "description": "",
   "main": "gl.js",
   "scripts": {
+    "minify": "terser gl.js -m -c > dist/gl.min.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Adi-df",
   "license": "MIT",
   "devDependencies": {
-    "prettier": "2.5.1"
+    "prettier": "2.5.1",
+    "terser": "5.12.0"
   }
 }
