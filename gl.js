@@ -41,13 +41,13 @@ function init(canvas) {
     canvas.webkitRequestPointerLock ||
     // pointer lock in any form is not supported on iOS safari
     // https://developer.mozilla.org/en-US/docs/Web/API/Pointer_Lock_API#browser_compatibility
-    (() => { });
+    (() => {});
   document.exitPointerLock =
     document.exitPointerLock ||
     document.mozExitPointerLock ||
     document.webkitExitPointerLock ||
     // pointer lock in any form is not supported on iOS safari
-    (() => { });
+    (() => {});
 
   function assert(flag, message) {
     if (flag == false) {
@@ -335,11 +335,7 @@ function init(canvas) {
         GL.recordError(0x0502 /* GL_INVALID_OPERATION */);
 
         alert(
-          "GL_INVALID_OPERATION in " +
-          functionName +
-          ": GLctx." +
-          createFunction +
-          " returned null - most likely GL context is lost!"
+          `GL_INVALID_OPERATION in ${functionName}: GLctx. ${createFunction} returned null - most likely GL context is lost!`
         );
       }
       getArray(buffers + i * 4, Int32Array, 1)[0] = id;
@@ -360,7 +356,7 @@ function init(canvas) {
     }
     let ret = undefined;
     switch (
-    name_ // Handle a few trivial GLES values
+      name_ // Handle a few trivial GLES values
     ) {
       case 0x8dfa: // GL_SHADER_COMPILER
         ret = 1;
@@ -486,19 +482,18 @@ function init(canvas) {
   let Module;
   let wasm_exports;
 
-  // function resize(canvas, on_resize) {
-  //   let dpr = dpi_scale();
-  //   let displayWidth = canvas.clientWidth * dpr;
-  //   let displayHeight = canvas.clientHeight * dpr;
+  function resize(canvas, on_resize) {
+    let dpr = dpi_scale();
+    let displayWidth = canvas.clientWidth * dpr;
+    let displayHeight = canvas.clientHeight * dpr;
 
-  //   if (canvas.width != displayWidth ||
-  //     canvas.height != displayHeight) {
-  //     canvas.width = displayWidth;
-  //     canvas.height = displayHeight;
-  //     if (on_resize != undefined)
-  //       on_resize(Math.floor(displayWidth), Math.floor(displayHeight))
-  //   }
-  // }
+    if (canvas.width != displayWidth || canvas.height != displayHeight) {
+      canvas.width = displayWidth;
+      canvas.height = displayHeight;
+      if (on_resize != undefined)
+        on_resize(Math.floor(displayWidth), Math.floor(displayHeight));
+    }
+  }
 
   function animation() {
     wasm_exports.frame();
@@ -893,10 +888,10 @@ function init(canvas) {
           type,
           pixels
             ? getArray(
-              pixels,
-              Uint8Array,
-              texture_size(internalFormat, width, height)
-            )
+                pixels,
+                Uint8Array,
+                texture_size(internalFormat, width, height)
+              )
             : null
         );
       },
@@ -1525,10 +1520,10 @@ function init(canvas) {
       },
       setup_canvas_size(high_dpi) {
         window.high_dpi = high_dpi;
-        // resize(canvas);
+        resize(canvas);
       },
       run_animation_loop(ptr) {
-        canvas.onmousemove = function(event) {
+        canvas.onmousemove = function (event) {
           let relative_position = mouse_relative_position(
             event.clientX,
             event.clientY
@@ -1547,7 +1542,7 @@ function init(canvas) {
             );
           }
         };
-        canvas.onmousedown = function(event) {
+        canvas.onmousedown = function (event) {
           let relative_position = mouse_relative_position(
             event.clientX,
             event.clientY
@@ -1559,11 +1554,11 @@ function init(canvas) {
           wasm_exports.mouse_down(x, y, btn);
         };
         // SO WEB SO CONSISTENT
-        canvas.addEventListener("wheel", function(event) {
+        canvas.addEventListener("wheel", function (event) {
           event.preventDefault();
           wasm_exports.mouse_wheel(-event.deltaX, -event.deltaY);
         });
-        canvas.onmouseup = function(event) {
+        canvas.onmouseup = function (event) {
           let relative_position = mouse_relative_position(
             event.clientX,
             event.clientY
@@ -1574,7 +1569,7 @@ function init(canvas) {
           let btn = into_sapp_mousebutton(event.button);
           wasm_exports.mouse_up(x, y, btn);
         };
-        canvas.onkeydown = function(event) {
+        canvas.onkeydown = function (event) {
           let sapp_key_code = into_sapp_keycode(event.code);
           switch (sapp_key_code) {
             //  space, arrows - prevent scrolling of the page
@@ -1626,7 +1621,7 @@ function init(canvas) {
             wasm_exports.key_press(sapp_key_code);
           }
         };
-        canvas.onkeyup = function(event) {
+        canvas.onkeyup = function (event) {
           let sapp_key_code = into_sapp_keycode(event.code);
 
           let modifiers = 0;
@@ -1642,7 +1637,7 @@ function init(canvas) {
 
           wasm_exports.key_up(sapp_key_code, modifiers);
         };
-        canvas.onkeypress = function(event) {
+        canvas.onkeypress = function (event) {
           let sapp_key_code = into_sapp_keycode(event.code);
 
           // firefox do not send onkeypress events for ctrl+keys and delete key while chrome do
@@ -1653,7 +1648,7 @@ function init(canvas) {
           }
         };
 
-        canvas.addEventListener("touchstart", function(event) {
+        canvas.addEventListener("touchstart", function (event) {
           event.preventDefault();
 
           for (const touch of event.changedTouches) {
@@ -1665,7 +1660,7 @@ function init(canvas) {
             );
           }
         });
-        canvas.addEventListener("touchend", function(event) {
+        canvas.addEventListener("touchend", function (event) {
           event.preventDefault();
 
           for (const touch of event.changedTouches) {
@@ -1677,7 +1672,7 @@ function init(canvas) {
             );
           }
         });
-        canvas.addEventListener("touchcancel", function(event) {
+        canvas.addEventListener("touchcancel", function (event) {
           event.preventDefault();
 
           for (const touch of event.changedTouches) {
@@ -1689,7 +1684,7 @@ function init(canvas) {
             );
           }
         });
-        canvas.addEventListener("touchmove", function(event) {
+        canvas.addEventListener("touchmove", function (event) {
           event.preventDefault();
 
           for (const touch of event.changedTouches) {
@@ -1702,9 +1697,9 @@ function init(canvas) {
           }
         });
 
-        // window.onresize = function() {
-        //   resize(canvas, wasm_exports.resize);
-        // };
+        window.onresize = function () {
+          resize(canvas, wasm_exports.resize);
+        };
         window.addEventListener("copy", (e) => {
           if (clipboard != null) {
             e.clipboardData.setData("text/plain", clipboard);
@@ -1747,7 +1742,7 @@ function init(canvas) {
         let xhr = new XMLHttpRequest();
         xhr.open("GET", url, true);
         xhr.responseType = "arraybuffer";
-        xhr.onload = function(e) {
+        xhr.onload = function (e) {
           if (this.status == 200) {
             let uInt8Array = new Uint8Array(this.response);
 
@@ -1755,7 +1750,7 @@ function init(canvas) {
             wasm_exports.file_loaded(file_id);
           }
         };
-        xhr.onerror = function(e) {
+        xhr.onerror = function (e) {
           FS.loaded_files[file_id] = null;
           wasm_exports.file_loaded(file_id);
         };
@@ -1806,7 +1801,7 @@ function init(canvas) {
       sapp_set_window_size(new_width, new_height) {
         canvas.width = new_width;
         canvas.height = new_height;
-        // resize(canvas, wasm_exports.resize);
+        resize(canvas, wasm_exports.resize);
       },
     },
   };
@@ -1882,7 +1877,7 @@ function init(canvas) {
     for (const i in imports) {
       if (importObject["env"][imports[i].name] == undefined) {
         console.warn(`No ${imports[i].name} function in gl.js`);
-        importObject["env"][imports[i].name] = function() {
+        importObject["env"][imports[i].name] = function () {
           console.warn(`Missed function: ${imports[i].name}`);
         };
       }
@@ -1923,11 +1918,11 @@ function init(canvas) {
       req
         .then((res) => res.arrayBuffer())
         .then((bytes) => WebAssembly.compile(bytes))
-        .then(function(obj) {
+        .then(function (obj) {
           add_missing_functions_stabs(obj);
           return WebAssembly.instantiate(obj, importObject);
         })
-        .then(function(obj) {
+        .then(function (obj) {
           wasm_memory = obj.exports.memory;
           wasm_exports = obj.exports;
 
