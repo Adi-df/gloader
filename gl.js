@@ -146,9 +146,9 @@ function init(canvas) {
       } else {
         if ((u0 & 0xf8) != 0xf0)
           console.warn(
-            "Invalid UTF-8 leading byte 0x" +
-            u0.toString(16) +
-            " encountered when deserializing a UTF-8 string on the asm.js/wasm heap to a JS string!"
+            `Invalid UTF - 8 leading byte 0x${u0.toString(
+              16
+            )} encountered when deserializing a UTF-8 string on the asm.js/wasm heap to a JS string!`
           );
 
         u0 = ((u0 & 7) << 18) | (u1 << 12) | (u2 << 6) | (u8Array[idx++] & 63);
@@ -194,9 +194,9 @@ function init(canvas) {
 
         if (u >= 0x200000)
           console.warn(
-            "Invalid Unicode code point 0x" +
-            u.toString(16) +
-            " encountered when serializing a JS string to an UTF-8 string on the asm.js/wasm heap! (Valid unicode code points should be in range 0-0x1FFFFF)."
+            `Invalid Unicode code point 0x${u.toString(
+              16
+            )} encountered when serializing a JS string to an UTF-8 string on the asm.js/wasm heap! (Valid unicode code points should be in range 0-0x1FFFFF).`
           );
 
         heap[outIdx++] = 0xf0 | (u >> 18);
@@ -244,21 +244,11 @@ function init(canvas) {
       if (objectID != 0) {
         if (objectHandleArray[objectID] === null) {
           console.error(
-            callerFunctionName +
-            " called with an already deleted " +
-            objectReadableType +
-            " ID " +
-            objectID +
-            "!"
+            `${callerFunctionName} called with an already deleted ${objectReadableType} ID ${objectID}!`
           );
         } else if (!objectHandleArray[objectID]) {
           console.error(
-            callerFunctionName +
-            " called with an invalid " +
-            objectReadableType +
-            " ID " +
-            objectID +
-            "!"
+            `${callerFunctionName} called with an invalid ${objectReadableType} ID ${objectID}!`
           );
         }
       }
@@ -363,11 +353,7 @@ function init(canvas) {
     // better to report an error instead of doing anything random.
     if (!p) {
       console.error(
-        "GL_INVALID_VALUE in glGet" +
-        type +
-        "v(name=" +
-        name_ +
-        ": Function called with null out pointer!"
+        `GL_INVALID_VALUE in glGet${type}v(name=${name_}: Function called with null out pointer!`
       );
       GL.recordError(0x501 /* GL_INVALID_VALUE */);
       return;
@@ -384,9 +370,7 @@ function init(canvas) {
           GL.recordError(0x500); // GL_INVALID_ENUM
 
           err(
-            "GL_INVALID_ENUM in glGet" +
-            type +
-            "v(GL_SHADER_BINARY_FORMATS): Invalid parameter type!"
+            `GL_INVALID_ENUM in glGet${type}v(GL_SHADER_BINARY_FORMATS): Invalid parameter type!`
           );
         }
         return; // Do not write anything to the out pointer, since no binary formats are supported.
@@ -421,11 +405,7 @@ function init(canvas) {
         case "string":
           GL.recordError(0x500); // GL_INVALID_ENUM
           console.error(
-            "GL_INVALID_ENUM in glGet" +
-            type +
-            "v(" +
-            name_ +
-            ") on a name which returns a string!"
+            `GL_INVALID_ENUM in glGet${type}v(${name_}) on a name which returns a string!`
           );
           return;
         case "object":
@@ -450,11 +430,7 @@ function init(canvas) {
               default: {
                 GL.recordError(0x500); // GL_INVALID_ENUM
                 console.error(
-                  "GL_INVALID_ENUM in glGet" +
-                  type +
-                  "v(" +
-                  name_ +
-                  ") and it returns null!"
+                  `GL_INVALID_ENUM in glGet${type}v(${name_}) and it returns null!`
                 );
                 return;
               }
@@ -475,13 +451,7 @@ function init(canvas) {
             } catch (e) {
               GL.recordError(0x500); // GL_INVALID_ENUM
               console.error(
-                "GL_INVALID_ENUM in glGet" +
-                type +
-                "v: Unknown object returned from WebGL getParameter(" +
-                name_ +
-                ")! (error: " +
-                e +
-                ")"
+                `GL_INVALID_ENUM in glGet${type}v: Unknown object returned from WebGL getParameter(${name_})! (error: ${e})`
               );
               return;
             }
@@ -490,17 +460,7 @@ function init(canvas) {
         default:
           GL.recordError(0x500); // GL_INVALID_ENUM
           console.error(
-            "GL_INVALID_ENUM in glGet" +
-            type +
-            "v: Native code calling glGet" +
-            type +
-            "v(" +
-            name_ +
-            ") and it returns " +
-            result +
-            " of type " +
-            typeof result +
-            "!"
+            `GL_INVALID_ENUM in glGet${type}v: Native code calling glGet${type}v(${name_}) and it returns ${result} of type ${typeof result}!`
           );
           return;
       }
@@ -519,7 +479,7 @@ function init(canvas) {
         getArray(p, Int8Array, 1)[0] = ret ? 1 : 0;
         break;
       default:
-        throw "internal glGet error, bad type: " + type;
+        throw `internal glGet error, bad type: ${type}`;
     }
   }
 
@@ -1303,13 +1263,9 @@ function init(canvas) {
         let ptable = GL.programInfos[program];
         if (!ptable) {
           console.error(
-            "GL_INVALID_OPERATION in glGetProgramiv(program=" +
-            program +
-            ", pname=" +
-            pname +
-            ", p=0x" +
-            p.toString(16) +
-            "): The specified GL object name does not refer to a program object!"
+            `GL_INVALID_OPERATION in glGetProgramiv(program=${program}, pname=${pname}, p=0x${p.toString(
+              16
+            )}): The specified GL object name does not refer to a program object!`
           );
           return;
         }
@@ -1873,7 +1829,7 @@ function init(canvas) {
     let minor_version = (crate_version >> 16) & 0xff;
     let patch_version = crate_version & 0xffff;
 
-    return major_version + "." + minor_version + "." + patch_version;
+    return `${major_version}.${minor_version}.${patch_version}`;
   }
 
   function init_plugins(plugins) {
@@ -1894,26 +1850,18 @@ function init(canvas) {
         );
         console.warn("Probably old version of the plugin used");
       } else {
-        let version_func = plugins[i].name + "_crate_version";
+        let version_func = `${plugins[i].name}_crate_version`;
 
         if (wasm_exports[version_func] == undefined) {
           console.log(
-            "Plugin " +
-            plugins[i].name +
-            " is present in JS bundle, but is not used in the rust code."
+            `Plugin ${plugins[i].name} is present in JS bundle, but is not used in the rust code.`
           );
         } else {
           let crate_version = u32_to_semver(wasm_exports[version_func]());
 
           if (plugins[i].version != crate_version) {
             console.error(
-              "Plugin " +
-              plugins[i].name +
-              " version mismatch" +
-              "js version: " +
-              plugins[i].version +
-              ", crate version: " +
-              crate_version
+              `Plugin ${plugins[i].name} version mismatch, js version: ${plugins[i].version}, crate version: ${crate_version}`
             );
           }
         }
@@ -1933,9 +1881,9 @@ function init(canvas) {
 
     for (const i in imports) {
       if (importObject["env"][imports[i].name] == undefined) {
-        console.warn("No " + imports[i].name + " function in gl.js");
+        console.warn(`No ${imports[i].name} function in gl.js`);
         importObject["env"][imports[i].name] = function() {
-          console.warn("Missed function: " + imports[i].name);
+          console.warn(`Missed function: ${imports[i].name}`);
         };
       }
     }
@@ -1959,10 +1907,7 @@ function init(canvas) {
           let crate_version = u32_to_semver(wasm_exports.crate_version());
           if (version != crate_version) {
             console.error(
-              "Version mismatch: gl.js version is: " +
-              version +
-              ", rust sapp-wasm crate version is: " +
-              crate_version
+              `Version mismatch: gl.js version is: ${version}, rust sapp-wasm crate version is: ${crate_version}`
             );
           }
           init_plugins(plugins);
@@ -1993,10 +1938,7 @@ function init(canvas) {
           let crate_version = u32_to_semver(wasm_exports.crate_version());
           if (version != crate_version) {
             console.error(
-              "Version mismatch: gl.js version is: " +
-              version +
-              ", rust sapp-wasm crate version is: " +
-              crate_version
+              `Version mismatch: gl.js version is: ${version}, rust sapp-wasm crate version is: ${crate_version}`
             );
           }
           init_plugins(plugins);
