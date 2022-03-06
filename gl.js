@@ -1921,12 +1921,8 @@ function init(canvas) {
         });
     } else {
       req
-        .then(function(x) {
-          return x.arrayBuffer();
-        })
-        .then(function(bytes) {
-          return WebAssembly.compile(bytes);
-        })
+        .then((res) => res.arrayBuffer())
+        .then((bytes) => WebAssembly.compile(bytes))
         .then(function(obj) {
           add_missing_functions_stabs(obj);
           return WebAssembly.instantiate(obj, importObject);
