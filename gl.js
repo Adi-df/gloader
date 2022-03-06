@@ -33,15 +33,13 @@ function init(canvas) {
     canvas.webkitRequestPointerLock ||
     // pointer lock in any form is not supported on iOS safari
     // https://developer.mozilla.org/en-US/docs/Web/API/Pointer_Lock_API#browser_compatibility
-    (() => { })
-    ;
+    (() => { });
   document.exitPointerLock =
     document.exitPointerLock ||
     document.mozExitPointerLock ||
     document.webkitExitPointerLock ||
     // pointer lock in any form is not supported on iOS safari
-    (() => { })
-    ;
+    (() => { });
 
   function assert(flag, message) {
     if (flag == false) {
@@ -53,18 +51,10 @@ function init(canvas) {
     // Extension available in WebGL 1 from Firefox 25 and WebKit 536.28/desktop Safari 6.0.3 onwards. Core feature in WebGL 2.
     let ext = ctx.getExtension("OES_vertex_array_object");
     if (ext) {
-      ctx["createVertexArray"] = function() {
-        return ext["createVertexArrayOES"]();
-      };
-      ctx["deleteVertexArray"] = function(vao) {
-        ext["deleteVertexArrayOES"](vao);
-      };
-      ctx["bindVertexArray"] = function(vao) {
-        ext["bindVertexArrayOES"](vao);
-      };
-      ctx["isVertexArray"] = function(vao) {
-        return ext["isVertexArrayOES"](vao);
-      };
+      ctx["createVertexArray"] = () => ext["createVertexArrayOES"]();
+      ctx["deleteVertexArray"] = (vao) => ext["deleteVertexArrayOES"](vao);
+      ctx["bindVertexArray"] = (vao) => ext["bindVertexArrayOES"](vao);
+      ctx["isVertexArray"] = (vao) => ext["isVertexArrayOES"](vao);
     } else {
       alert("Unable to get OES_vertex_array_object extension");
     }
