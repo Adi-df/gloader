@@ -1194,20 +1194,20 @@ function init(canvas) {
         // window.onresize = function() {
         //   resize(canvas, wasm_exports.resize);
         // };
-        window.addEventListener("copy", function(e) {
+        window.addEventListener("copy", (e) => {
           if (clipboard != null) {
-            event.clipboardData.setData('text/plain', clipboard);
-            event.preventDefault();
+            e.clipboardData.setData('text/plain', clipboard);
+            e.preventDefault();
           }
         });
-        window.addEventListener("cut", function(e) {
+        window.addEventListener("cut", (e) => {
           if (clipboard != null) {
-            event.clipboardData.setData('text/plain', clipboard);
-            event.preventDefault();
+            e.clipboardData.setData('text/plain', clipboard);
+            e.preventDefault();
           }
         });
 
-        window.addEventListener("paste", function(e) {
+        window.addEventListener("paste", (e) => {
           e.stopPropagation();
           e.preventDefault();
           let clipboardData = e.clipboardData || window.clipboardData;
