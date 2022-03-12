@@ -5,12 +5,15 @@
   "main": "gl.js",
   "scripts": {
     "format": "prettier --write .",
-    "minify": "terser gl.js -m -c > dist/gl.min.js",
+    "build-commonjs": "swc gl.js -o dist/gl.min.js --config-file commonjs.swcrc.json",
+    "build-esmodule": "swc gl.js -o dist/gl.min.mjs --config-file esmodule.swcrc.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Adi-df",
   "license": "MIT",
   "devDependencies": {
+    "@swc/cli": "^0.1.55",
+    "@swc/core": "^1.2.150",
     "prettier": "2.5.1",
     "terser": "5.12.0"
   }
